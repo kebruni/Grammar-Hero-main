@@ -1,0 +1,22 @@
+version: "3.9"
+
+services:
+  api:
+    image: 3ahxut123nurbek/grammar-hero-api:latest
+    container_name: grammar-hero-api
+    restart: unless-stopped
+    networks:
+      docker_app_net:
+        ipv4_address: 192.168.0.190
+
+  web:
+    image: 3ahxut123nurbek/grammar-hero-web:latest
+    container_name: grammar-hero-web
+    restart: unless-stopped
+    networks:
+      docker_app_net:
+        ipv4_address: 192.168.0.191
+
+networks:
+  docker_app_net:
+    external: true
