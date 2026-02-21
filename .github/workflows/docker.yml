@@ -2,8 +2,7 @@ name: Build & Push Grammar Hero
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
   build:
@@ -19,19 +18,23 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      # -------- API --------
       - name: Build API image
         run: |
           docker build \
             -t 3ahxut123nurbek/grammar-hero-api:latest \
             -t 3ahxut123nurbek/grammar-hero-api:${{ github.sha }} \
-            -f docker/server.Dockerfile .
+            -f docker/server.Dockerfile \
+            apps/server
 
+      # -------- WEB --------
       - name: Build WEB image
         run: |
           docker build \
             -t 3ahxut123nurbek/grammar-hero-web:latest \
             -t 3ahxut123nurbek/grammar-hero-web:${{ github.sha }} \
-            -f docker/web.Dockerfile .
+            -f docker/web.Dockerfile \
+            apps/web
 
       - name: Push images
         run: |
