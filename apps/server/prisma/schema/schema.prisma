@@ -1,0 +1,53 @@
+generator client {
+  provider     = "prisma-client"
+  output       = "../generated"
+  moduleFormat = "esm"
+}
+
+datasource db {
+  provider = "postgres"
+}
+
+model Topics {
+  id               String     @id @default(cuid()) @map("_id")
+  createdAt        DateTime   @default(now()) @map("created_at")
+  updatedAt        DateTime   @updatedAt @map("updated_at")
+  title            String
+  shortDescription String     @map("short_description")
+  description      String
+  durationMax      DateTime   @map("duration_max") @db.Time(6)
+  durationMin      DateTime   @map("duration_min") @db.Time(6)
+  image            String?
+  content          String
+  level            Level
+  userId           String     @map("user_id")
+  bookmark         Bookmark[]
+  likes            Like[]
+  user             User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Like {
+  id      String @id @default(cuid()) @map("_id")
+  userId  String @map("user_id")
+  topicId String @map("topic_id")
+  topic   Topics @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, topicId])
+}
+
+model Bookmark {
+  id      String @id @default(cuid()) @map("_id")
+  userId  String @map("user_id")
+  topicId String @map("topic_id")
+  topics  Topics @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, topicId])
+}
+
+enum Level {
+  Basic
+  Intermediate
+  Advanced
+}

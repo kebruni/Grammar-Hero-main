@@ -1,0 +1,5 @@
+node_modules
+.turbo
+.alchemy
+.env
+./apps/server/src/images/*
