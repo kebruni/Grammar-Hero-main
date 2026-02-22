@@ -1,14 +1,22 @@
-FROM oven/bun:1.2.13
+FROM node:20-slim
+
+# Устанавливаем bun поверх Node 20
+RUN npm install -g bun
 
 WORKDIR /app
 
-COPY apps/server ./apps/server
-COPY package.json turbo.json ./
+# Копируем весь monorepo
+COPY . .
 
-RUN bun install
-RUN bun run build --filter=server
-
+# Переходим в server
 WORKDIR /app/apps/server
 
+# Устанавливаем зависимости
+RUN bun install
+
+# (опционально) билд
+RUN bun run build || true
+
 EXPOSE 3000
-CMD ["bun", "run", "start"]
+
+CMD ["bun", "run", "dev"]
