@@ -1,3 +1,5 @@
+## This workflow builds and pushes Docker images for the Grammar Hero API and Web applications
+
 name: Build & Push Grammar Hero
 
 on:
