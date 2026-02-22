@@ -18,27 +18,19 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # -------- API --------
       - name: Build API image
         run: |
           docker build \
             -t 3ahxut123nurbek/grammar-hero-api:latest \
-            -t 3ahxut123nurbek/grammar-hero-api:${{ github.sha }} \
-            -f docker/server.Dockerfile \
-            apps/server
+            -f docker/server.Dockerfile .
 
-      # -------- WEB --------
       - name: Build WEB image
         run: |
           docker build \
             -t 3ahxut123nurbek/grammar-hero-web:latest \
-            -t 3ahxut123nurbek/grammar-hero-web:${{ github.sha }} \
-            -f docker/web.Dockerfile \
-            apps/web
+            -f docker/web.Dockerfile .
 
       - name: Push images
         run: |
           docker push 3ahxut123nurbek/grammar-hero-api:latest
-          docker push 3ahxut123nurbek/grammar-hero-api:${{ github.sha }}
           docker push 3ahxut123nurbek/grammar-hero-web:latest
-          docker push 3ahxut123nurbek/grammar-hero-web:${{ github.sha }}
